@@ -1,0 +1,7 @@
+*.pdf
+*.html
+*.docx
+work
+*.log*
+*cache*
+.nextflow*
