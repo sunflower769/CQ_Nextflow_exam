@@ -1,7 +1,8 @@
 nextflow.enable.dsl = 2
 
 params.ref_accession = "M21012"
-params.out = "$projectDir/output"
+params.intstore = "$projectDir/intermediateData"
+params.result = "$projectDir/final_results"
 params.storeDir = "$projectDir/ref"
 params.dataDir = "$projectDir/data"
 
@@ -18,7 +19,7 @@ process download_gb {
 
 
 process combine_fasta {
-	publishDir params.out, mode:"copy", overwrite:true
+	publishDir params.intstore, mode:"copy", overwrite:true
 	input:
 		path ref_file
 	output:
@@ -28,10 +29,10 @@ process combine_fasta {
 	"""
 }
 
-//potential_problem: line breaks in FASTA!!!
+//potential_problem: line breaks in FASTA!!! See if makes issues
 
 process mafft {
-	publishDir params.out, mode:"copy", overwrite:true
+	publishDir params.intstore, mode:"copy", overwrite:true
 	container "https://depot.galaxyproject.org/singularity/mafft:7.525--h031d066_1"
 	input:
 		path infile
@@ -43,7 +44,7 @@ process mafft {
 }
 
 process trimal {
-	publishDir params.out, mode:"copy", overwrite:true
+	publishDir params.result, mode:"copy", overwrite:true
 	container "https://depot.galaxyproject.org/singularity/trimal:1.5.0--h4ac6f70_1"
 	input:
 		path infile
